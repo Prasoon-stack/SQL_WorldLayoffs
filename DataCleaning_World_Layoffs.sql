@@ -1,14 +1,19 @@
 -- Data Cleaning
+---------------------------------------------------------------------------------------------
 SELECT *
 FROM layoffs;
+
+-- I will:
 -- 1.Remove Duplicates
 -- 2.Standardize the Data
 -- 3.Null Values or blank values
--- 4. Remove Any Columns
+-- 4.Remove Any Columns
+---------------------------------------------------------------------------------------------
+
+-- REMOVE DUPLICATES
 
 CREATE TABLE layoffs_staging 
 LIKE layoffs;
-
 SELECT *
 FROM layoffs_staging;
 
@@ -29,10 +34,6 @@ FROM layoffs_staging
 SELECT *
 FROM duplicate_cte
 WHERE row_num > 1;
-
-SELECT *
-FROM layoffs_staging
-WHERE company = 'Casper';
 
 WITH duplicate_cte AS
 (
@@ -77,9 +78,9 @@ WHERE row_num > 1;
 
 SELECT *
 FROM layoffs_staging2;
+---------------------------------------------------------------------------------------------
 
-
--- Standardising Data
+-- STANDARDISING THE DATA
 
 SELECT company, TRIM(company)
 FROM layoffs_staging2;
@@ -110,6 +111,9 @@ SET `date` = STR_TO_DATE(`date`, '%m/%d/%Y');
 
 ALTER TABLE layoffs_staging2
 MODIFY COLUMN `date` DATE;
+---------------------------------------------------------------------------------------------
+
+-- ADDRESSING NULL OR BLANK VALUES
 
 SELECT *
 FROM layoffs_staging2
@@ -159,6 +163,9 @@ AND percentage_laid_off IS NULL;
 
 SELECT *
 FROM layoffs_staging2;
+---------------------------------------------------------------------------------------------
+
+-- REMOVING UNNECESSARY COLUMNS
 
 ALTER TABLE layoffs_staging2
 DROP COLUMN row_num;
